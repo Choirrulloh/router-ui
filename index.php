@@ -24,7 +24,7 @@
       <h1 style="text-align: center;">Chitnis Router</h1>
       <div class="row">
         <div class="col-3 border border-right-0 border-bottom-0">
-          <strong>System Name</strong>
+          <strong><i class="fas fa-server"></i> System Name</strong>
         </div>
         <div class="col border border-bottom-0">
           <?php echo gethostname(); ?>
@@ -32,7 +32,7 @@
       </div>
       <div class="row">
         <div class="col-3 border border-right-0 border-bottom-0">
-          <strong>OS</strong>
+          <strong><i class="fab fa-linux"></i> OS</strong>
         </div>
         <div class="col border border-bottom-0">
           <?php echo php_uname(); ?>
@@ -40,7 +40,7 @@
       </div>
       <div class="row">
         <div class="col-3 border border-right-0 border-bottom-0">
-          <strong>System Time</strong>
+          <strong><i class="fas fa-clock"></i> System Time</strong>
         </div>
         <div class="col border border-bottom-0">
           <?php echo shell_exec('date'); ?>
@@ -48,7 +48,7 @@
       </div>
       <div class="row">
         <div class="col-3 border border-right-0 border-bottom-0">
-          <strong>Uptime</strong>
+          <strong><i class="fas fa-arrow-up"></i> Uptime</strong>
         </div>
         <div class="col border border-bottom-0">
           <?php echo shell_exec('uptime -p'); ?>
@@ -56,7 +56,7 @@
       </div>
       <div class="row">
         <div class="col-3 border border-right-0 border-bottom-0">
-          <strong>System Load</strong>
+          <strong><i class="fas fa-microchip"></i> System Load</strong>
         </div>
         <div class="col border border-bottom-0">
           <?php $load = sys_getloadavg(); echo number_format((float)$load[0], 2, '.', '').", ".number_format((float)$load[1], 2, '.', '').", ".number_format((float)$load[3], 2, '.', ''); ?>
@@ -64,7 +64,7 @@
       </div>
       <div class="row">
         <div class="col-3 border border-right-0 border-bottom-0">
-          <strong>Memory Usage</strong>
+          <strong><i class="fas fa-memory"></i> Memory Usage</strong>
         </div>
         <div class="col border border-bottom-0" style="padding-top: 5px; padding-bottom: 5px;">
           <?php
@@ -90,7 +90,7 @@
       </div>
       <div class="row">
         <div class="col-3 border border-right-0 border-bottom-0">
-          <strong>Disk Usage</strong>
+          <strong><i class="fas fa-hdd"></i> Disk Usage</strong>
         </div>
         <div class="col border border-bottom-0" style="padding-top: 5px; padding-bottom: 5px;">
           <?php $disk_total = disk_total_space("/"); $disk_free = disk_free_space("/"); $disk_used = $disk_total - $disk_free; echo number_format((float)(((($disk_used)/1024)/1024)/1024), 2, '.', '')."/".number_format((float)((($disk_total/1024)/1024)/1024), 2, '.', '')." GB" ?>
@@ -107,7 +107,7 @@
       </div>
       <div class="row">
         <div class="col-3 border border-right-0 border-bottom-0">
-          <strong>WAN</strong>
+          <strong><i class="fas fa-globe-americas"></i> WAN</strong>
         </div>
         <div class="col border border-bottom-0">
           <?php
@@ -150,7 +150,7 @@
       </div>
       <div class="row">
         <div class="col-3 border border-right-0 border-bottom-0">
-          <strong>LAN</strong>
+          <strong><i class="fas fa-wifi"></i> LAN</strong>
         </div>
         <div class="col border border-bottom-0">
           <?php
@@ -184,7 +184,7 @@
       </div>
       <div class="row">
         <div class="col border border-bottom-0" style="padding-top: 20px; padding-bottom: 5px;">
-          <h4 style="text-align: center;">Data</h4>
+          <h4 style="text-align: center;"><i class="fas fa-download"></i> Data</h4>
         </div>
       </div>
       <div class="row">
@@ -227,9 +227,22 @@
                 if ($lease_arr[0] == "duid") {
                   break;
                 }
+                $display_symbol = "";
+                if (strpos(strtolower($lease_arr[3]), 'iphone') !== false) {
+                  $display_symbol = "<i class='fas fa-mobile'></i>";
+                } else if (strpos(strtolower($lease_arr[3]), 'ipad') !== false) {
+                  $display_symbol = "<i class='fas fa-tablet'></i>";
+                } else if (strpos(strtolower($lease_arr[3]), 'macbook') !== false) {
+                  $display_symbol = "<i class='fas fa-laptop'></i>";
+                } else if (strpos(strtolower($lease_arr[3]), 'nokia') !== false
+                || strpos(strtolower($lease_arr[3]), 'mobile') !== false || strpos(strtolower($lease_arr[3]), 'android') !== false) {
+                  $display_symbol = "<i class='fas fa-mobile-alt'></i>";
+                } else if (strpos(strtolower($lease_arr[3]), 'airport') !== false) {
+                  $display_symbol = "<i class='fas fa-wifi'></i>";
+                }
               ?>
               <tr>
-                <th scope="row"><?php echo $lease_arr[3] ?></th>
+                <th scope="row"><?php echo $display_symbol ?> <?php echo $lease_arr[3] ?></th>
                 <td><?php echo $lease_arr[1] ?></td>
                 <td><?php echo $lease_arr[2] ?></td>
                 <?php
