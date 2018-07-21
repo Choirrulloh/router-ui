@@ -132,7 +132,7 @@
           $lan_ipv4 = shell_exec("ip addr show dev ".$wan_interface." | grep -w inet | grep -v 127.0.0.1 | awk '{ print $2}'");
           $lan_ipv4 = (string)trim($lan_ipv4);
           $lan_ipv4_arr = explode("\n", $lan_ipv4);
-          $lan_ipv6 = shell_exec("ip addr show dev ".$wan_interface." | grep -w inet6 | grep -v ::1 | awk '{ print $2}'");
+          $lan_ipv6 = shell_exec("ip addr show dev ".$wan_interface." | grep -w inet6 | awk '{ print $2}'");
           $lan_ipv6 = (string)trim($lan_ipv6);
           $lan_ipv6_arr = explode("\n", $lan_ipv6);
           ?>
@@ -175,7 +175,7 @@
           $lan_ipv4 = shell_exec("ip addr show dev ".$lan_interface." | grep -w inet | grep -v 127.0.0.1 | awk '{ print $2}'");
           $lan_ipv4 = (string)trim($lan_ipv4);
           $lan_ipv4_arr = explode("\n", $lan_ipv4);
-          $lan_ipv6 = shell_exec("ip addr show dev ".$lan_interface." | grep -w inet6 | grep -v ::1 | awk '{ print $2}'");
+          $lan_ipv6 = shell_exec("ip addr show dev ".$lan_interface." | grep -w inet6 | awk '{ print $2}'");
           $lan_ipv6 = (string)trim($lan_ipv6);
           $lan_ipv6_arr = explode("\n", $lan_ipv6);
           ?>
