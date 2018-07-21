@@ -229,16 +229,16 @@
                 }
                 $display_symbol = "";
                 if (strpos(strtolower($lease_arr[3]), 'iphone') !== false) {
-                  $display_symbol = "<i class='fas fa-mobile'></i>";
+                  $display_symbol = "<i class='fab fa-apple'></i> <i class='fas fa-mobile'></i>";
                 } else if (strpos(strtolower($lease_arr[3]), 'ipad') !== false) {
-                  $display_symbol = "<i class='fas fa-tablet'></i>";
+                  $display_symbol = "<i class='fab fa-apple'></i> <i class='fas fa-tablet'></i>";
                 } else if (strpos(strtolower($lease_arr[3]), 'macbook') !== false) {
-                  $display_symbol = "<i class='fas fa-laptop'></i>";
+                  $display_symbol = "<i class='fab fa-apple'></i> <i class='fas fa-laptop'></i>";
                 } else if (strpos(strtolower($lease_arr[3]), 'nokia') !== false
                 || strpos(strtolower($lease_arr[3]), 'mobile') !== false || strpos(strtolower($lease_arr[3]), 'android') !== false) {
-                  $display_symbol = "<i class='fas fa-mobile-alt'></i>";
+                  $display_symbol = "<i class='fab fa-android'></i> <i class='fas fa-mobile-alt'></i>";
                 } else if (strpos(strtolower($lease_arr[3]), 'airport') !== false) {
-                  $display_symbol = "<i class='fas fa-wifi'></i>";
+                  $display_symbol = "<i class='fab fa-apple'></i> <i class='fas fa-wifi'></i>";
                 }
               ?>
               <tr>
