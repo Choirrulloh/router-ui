@@ -15,7 +15,14 @@
     $connectivity_test_host = "www.archlinux.org";
     ?>
 
-    <?php $connected = @fsockopen($connectivity_test_host, 80); ?>
+    <?php
+    $testipv4socket = @fsockopen($connectivity_test_host, 80);
+    $connected = false;
+    if ($testipv4socket) {
+      $connected = true;
+    }
+    fclose($testipv4socket);
+    ?>
 
     <title><?php echo gethostname(); ?></title>
   </head>
