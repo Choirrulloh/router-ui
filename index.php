@@ -340,6 +340,7 @@
     $(document).ready(function() {
 
       function reloadThings() {
+        getsystime();
         getloadavg();
       }
 
@@ -348,6 +349,15 @@
           url: "api/getloadavg.php",
           success: function(result) {
             $("#sysload").html(result);
+          }
+        });
+      }
+
+      function getsystime() {
+        $.ajax({
+          url: "api/getsystime.php",
+          success: function(result) {
+            $("#systime").html(result);
           }
         });
       }
