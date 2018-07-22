@@ -22,6 +22,15 @@
       $connected = true;
     }
     fclose($testipv4socket);
+
+    $external_ipv4 = "";
+    $external_ipv6 = "";
+    if ($connected) {
+      $external_ipv4 = shell_exec("dig +short myip.opendns.com @resolver1.opendns.com");
+      $external_ipv4 = (string)trim($external_ipv4);
+      $external_ipv6 = shell_exec("curl https://ipv6.icanhazip.com/");
+      $external_ipv6 = (string)trim($external_ipv6);
+    }
     ?>
 
     <title><?php echo gethostname(); ?></title>
@@ -152,6 +161,8 @@
             }
             ?>
           </small><br />
+          <small><strong>External IPv4:</strong>&nbsp;<?php echo $external_ipv4 ?></small><br />
+          <small><strong>External IPv6:</strong>&nbsp;<?php echo $external_ipv6 ?></small><br />
           <small><strong>Physical Address:</strong>&nbsp;<?php echo $lan_mac ?></small><br />
           <small><strong>IPv4:</strong>&nbsp;
             <?php
