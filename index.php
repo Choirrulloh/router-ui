@@ -25,11 +25,39 @@
 
     $external_ipv4 = "";
     $external_ipv6 = "";
+    $isp_name = "";
+
     if ($connected) {
       $external_ipv4 = shell_exec("dig +short myip.opendns.com @resolver1.opendns.com");
       $external_ipv4 = (string)trim($external_ipv4);
       $external_ipv6 = shell_exec("curl https://ipv6.icanhazip.com/");
       $external_ipv6 = (string)trim($external_ipv6);
+
+      if (file_exists("isp_details.txt")) {
+        $isp_details = shell_exec("cat isp_details.txt");
+        $isp_details = (string)trim($isp_details);
+        $isp_details_arr = explode("\n", $isp_details);
+
+        if ($external_ipv4 !== $isp_details_arr[0]) {
+          $isp_name = shell_exec("curl https://ipapi.co/".$external_ipv4."/org/");
+          $isp_name = (string)trim($isp_name);
+
+          $isp_details_file = 'isp_details.txt';
+          $handle = fopen($isp_details_file, 'w') or die('Cannot open file: '.$isp_details_file);
+          $data = $external_ipv4."\n".$isp_name;
+          fwrite($handle, $data);
+        } else {
+          $isp_name = $isp_details_arr[1];
+        }
+      } else {
+        $isp_name = shell_exec("curl https://ipapi.co/".$external_ipv4."/org/");
+        $isp_name = (string)trim($isp_name);
+
+        $isp_details_file = 'isp_details.txt';
+        $handle = fopen($isp_details_file, 'w') or die('Cannot open file: '.$isp_details_file);
+        $data = $external_ipv4."\n".$isp_name;
+        fwrite($handle, $data);
+      }
     }
     ?>
 
@@ -161,8 +189,9 @@
             }
             ?>
           </small><br />
-          <small><strong>External IPv4:</strong>&nbsp;<?php echo $external_ipv4 ?></small><br />
-          <small><strong>External IPv6:</strong>&nbsp;<?php echo $external_ipv6 ?></small><br />
+          <small><strong>ISP:</strong>&nbsp;<?php echo $isp_name ?></small><br />
+          <small><strong>Public IPv4:</strong>&nbsp;<?php echo $external_ipv4 ?></small><br />
+          <small><strong>Public IPv6:</strong>&nbsp;<?php echo $external_ipv6 ?></small><br />
           <small><strong>Physical Address:</strong>&nbsp;<?php echo $lan_mac ?></small><br />
           <small><strong>IPv4:</strong>&nbsp;
             <?php
