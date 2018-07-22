@@ -86,7 +86,7 @@
         <div class="col-3 border border-right-0 border-bottom-0">
           <strong><i class="fas fa-clock"></i> System Time</strong>
         </div>
-        <div class="col border border-bottom-0">
+        <div class="col border border-bottom-0" id="systime">
           <?php echo shell_exec('date'); ?>
         </div>
       </div>
@@ -102,8 +102,11 @@
         <div class="col-3 border border-right-0 border-bottom-0">
           <strong><i class="fas fa-microchip"></i> System Load</strong>
         </div>
-        <div class="col border border-bottom-0">
-          <?php $load = sys_getloadavg(); echo number_format((float)$load[0], 2, '.', '').", ".number_format((float)$load[1], 2, '.', '').", ".number_format((float)$load[3], 2, '.', ''); ?>
+        <div class="col border border-bottom-0" id="sysload">
+          <?php
+          $load = sys_getloadavg();
+          echo number_format((float)$load[0], 2, '.', '').", ".number_format((float)$load[1], 2, '.', '').", ".number_format((float)$load[3], 2, '.', '');
+          ?>
         </div>
       </div>
       <div class="row">
@@ -329,8 +332,29 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="js/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="js/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+    <!--<script defer src="js/jquery-3.3.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function() {
+
+      function reloadThings() {
+        getloadavg();
+      }
+
+      function getloadavg() {
+        $.ajax({
+          url: "api/getloadavg.php",
+          success: function(result) {
+            $("#sysload").html(result);
+          }
+        });
+      }
+
+      setInterval(reloadThings, 5000);
+
+    });
+    </script>
   </body>
 </html>
