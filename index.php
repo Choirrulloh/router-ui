@@ -118,22 +118,8 @@
         <div class="col-3 border border-right-0 border-bottom-0">
           <strong><i class="fas fa-hdd"></i> Disk Usage</strong>
         </div>
-        <div class="col border border-bottom-0" style="padding-top: 5px; padding-bottom: 5px;">
-          <?php $disk_total = disk_total_space("/"); $disk_free = disk_free_space("/"); $disk_used = $disk_total - $disk_free; echo number_format((float)(((($disk_used)/1024)/1024)/1024), 2, '.', '')."/".number_format((float)((($disk_total/1024)/1024)/1024), 2, '.', '')." GB" ?>
-          <?php
-          $disk_percentage = ($disk_used/$disk_total)*100;
-          $formatted_disk_percent = number_format((float)$disk_percentage, 2, '.', '');
-          $disk_progress_color = "bg-success";
-          if ($formatted_disk_percent > 50) {
-            $disk_progress_color = "bg-warning";
-          }
-          if ($formatted_disk_percent > 90) {
-            $disk_progress_color = "bg-danger";
-          }
-          ?>
-          <div class="progress" style="height: 24px;">
-            <div class="progress-bar <?php echo $disk_progress_color ?>" role="progressbar" style="width: <?php echo $formatted_disk_percent ?>%;" aria-valuenow="<?php echo $formatted_disk_percent ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $formatted_disk_percent ?>%</div>
-          </div>
+        <div class="col border border-bottom-0" style="padding-top: 5px; padding-bottom: 5px;" id="sysdisk">
+          <?php include "api/getsysdisk.php" ?>
         </div>
       </div>
       <div class="row">
@@ -315,6 +301,7 @@
       function reloadThings() {
         getsystime();
         getsysmem();
+        getsysdisk();
         getloadavg();
       }
 
@@ -332,6 +319,15 @@
           url: "api/getsysmem.php",
           success: function(result) {
             $("#sysmem").html(result);
+          }
+        });
+      }
+
+      function getsysdisk() {
+        $.ajax({
+          url: "api/getsysdisk.php",
+          success: function(result) {
+            $("#sysdisk").html(result);
           }
         });
       }
