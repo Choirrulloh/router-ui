@@ -278,6 +278,8 @@
                   $display_symbol = "<i class='fab fa-android'></i> <i class='fas fa-mobile-alt'></i>";
                 } else if (strpos(strtolower($lease_arr[3]), 'airport') !== false) {
                   $display_symbol = "<i class='fab fa-apple'></i> <i class='fas fa-wifi'></i>";
+                } else if (strpos(strtolower($lease_arr[3]), 'linksys') !== false) {
+                  $display_symbol = "<i class='fas fa-wifi'></i>";
                 }
               ?>
               <tr>
