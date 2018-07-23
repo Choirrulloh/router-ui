@@ -214,9 +214,9 @@
       </div>
       <div class="row">
         <div class="col border border-bottom-0" style="text-align: center;">
-          <?php echo shell_exec('vnstati -s --noheader --noedge -i '.$wan_interface.' -o ./summary.png'); ?>
+          <?php include "api/getvnstat.php" ?>
           <a href="/vnstat">
-            <img src="summary.png" class="img-fluid" alt="Responsive image">
+            <img src="summary.png" class="img-fluid" alt="Responsive image" id="vnstat">
           </a>
         </div>
       </div>
@@ -266,6 +266,10 @@
         getdhcplist();
       }
 
+      function reloadThingsPeriodic() {
+        getvnstat();
+      }
+
       function getsysuptime() {
         $.ajax({
           url: "api/getsysuptime.php",
@@ -311,6 +315,18 @@
         });
       }
 
+      function getvnstat() {
+        $.ajax({
+          url: "api/getvnstat.php",
+          data: {
+            interface: '<?php echo $wan_interface ?>'
+          },
+          success: function(result) {
+            $("#vnstat").attr("src", "api/summary.png");
+          }
+        });
+      }
+
       function getdhcplist() {
         $.ajax({
           url: "api/getdhcplist.php",
@@ -321,6 +337,7 @@
       }
 
       setInterval(reloadThings, 5000);
+      setInterval(reloadThingsPeriodic, 300000);
 
     });
     </script>
