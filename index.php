@@ -94,8 +94,8 @@
         <div class="col-3 border border-right-0 border-bottom-0">
           <strong><i class="fas fa-arrow-up"></i> Uptime</strong>
         </div>
-        <div class="col border border-bottom-0">
-          <?php echo shell_exec('uptime -p'); ?>
+        <div class="col border border-bottom-0" id="sysuptime">
+          <?php include "api/getsysuptime.php" ?>
         </div>
       </div>
       <div class="row">
@@ -221,15 +221,6 @@
         </div>
       </div>
       <div class="row">
-        <?php
-        $leases_file = '/var/lib/misc/dnsmasq.leases';
-        if (!file_exists($leases_file)) {
-          $leases_file = 'dnsmasq.leases';
-        }
-        $leases = shell_exec('cat '.$leases_file);
-        $leases = (string)trim($leases);
-        $leases_arr = explode("\n", $leases);
-        ?>
         <div class="col border border-bottom-0" style="padding-top: 20px; padding-bottom: 5px;">
           <h4 style="text-align: center;">DHCP Leases</h4>
         </div>
@@ -245,40 +236,8 @@
                 <th scope="col">Lease Until</th>
               </tr>
             </thead>
-            <tbody>
-              <?php
-              foreach ($leases_arr as $lease) {
-                $lease_arr = explode(" ", $lease);
-                if ($lease_arr[0] == "duid") {
-                  break;
-                }
-                $display_symbol = "";
-                if (strpos(strtolower($lease_arr[3]), 'iphone') !== false) {
-                  $display_symbol = "<i class='fab fa-apple'></i> <i class='fas fa-mobile'></i>";
-                } else if (strpos(strtolower($lease_arr[3]), 'ipad') !== false) {
-                  $display_symbol = "<i class='fab fa-apple'></i> <i class='fas fa-tablet'></i>";
-                } else if (strpos(strtolower($lease_arr[3]), 'macbook') !== false) {
-                  $display_symbol = "<i class='fab fa-apple'></i> <i class='fas fa-laptop'></i>";
-                } else if (strpos(strtolower($lease_arr[3]), 'nokia') !== false
-                || strpos(strtolower($lease_arr[3]), 'mobile') !== false || strpos(strtolower($lease_arr[3]), 'android') !== false) {
-                  $display_symbol = "<i class='fab fa-android'></i> <i class='fas fa-mobile-alt'></i>";
-                } else if (strpos(strtolower($lease_arr[3]), 'airport') !== false) {
-                  $display_symbol = "<i class='fab fa-apple'></i> <i class='fas fa-wifi'></i>";
-                } else if (strpos(strtolower($lease_arr[3]), 'linksys') !== false) {
-                  $display_symbol = "<i class='fas fa-wifi'></i>";
-                }
-              ?>
-              <tr>
-                <th scope="row"><?php echo $display_symbol ?> <?php echo $lease_arr[3] ?></th>
-                <td><?php echo $lease_arr[1] ?></td>
-                <td><?php echo $lease_arr[2] ?></td>
-                <?php
-                $epoch = $lease_arr[0];
-                $dt = new DateTime("@$epoch");  // convert UNIX timestamp to PHP DateTime
-                ?>
-                <td><?php echo $dt->format('D M d H:i'); ?></td>
-              </tr>
-              <?php } ?>
+            <tbody id="dhcplist">
+              <?php include "api/getdhcplist.php" ?>
             </tbody>
           </table>
         </div>
@@ -299,10 +258,21 @@
     $(document).ready(function() {
 
       function reloadThings() {
+        getsysuptime();
         getsystime();
         getsysmem();
         getsysdisk();
         getloadavg();
+        getdhcplist();
+      }
+
+      function getsysuptime() {
+        $.ajax({
+          url: "api/getsysuptime.php",
+          success: function(result) {
+            $("#sysuptime").html(result);
+          }
+        });
       }
 
       function getloadavg() {
@@ -337,6 +307,15 @@
           url: "api/getsystime.php",
           success: function(result) {
             $("#systime").html(result);
+          }
+        });
+      }
+
+      function getdhcplist() {
+        $.ajax({
+          url: "api/getdhcplist.php",
+          success: function(result) {
+            $("#dhcplist").html(result);
           }
         });
       }
