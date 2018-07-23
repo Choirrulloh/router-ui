@@ -87,7 +87,7 @@
           <strong><i class="fas fa-clock"></i> System Time</strong>
         </div>
         <div class="col border border-bottom-0" id="systime">
-          <?php echo shell_exec('date'); ?>
+          <?php include "api/getsystime.php" ?>
         </div>
       </div>
       <div class="row">
@@ -103,10 +103,7 @@
           <strong><i class="fas fa-microchip"></i> System Load</strong>
         </div>
         <div class="col border border-bottom-0" id="sysload">
-          <?php
-          $load = sys_getloadavg();
-          echo number_format((float)$load[0], 2, '.', '').", ".number_format((float)$load[1], 2, '.', '').", ".number_format((float)$load[3], 2, '.', '');
-          ?>
+          <?php include "api/getloadavg.php" ?>
         </div>
       </div>
       <div class="row">
@@ -332,7 +329,6 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!--<script defer src="js/jquery-3.3.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
