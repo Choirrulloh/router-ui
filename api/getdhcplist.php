@@ -28,6 +28,8 @@ foreach ($leases_arr as $lease) {
     $display_symbol = "<i class='fab fa-apple'></i> <i class='fas fa-wifi'></i>";
   } else if (strpos(strtolower($lease_arr[3]), 'linksys') !== false) {
     $display_symbol = "<i class='fas fa-wifi'></i>";
+  } else if (strpos(strtolower($lease_arr[3]), 'deskjet') !== false || strpos(strtolower($lease_arr[3]), 'laserjet') !== false || strpos(strtolower($lease_arr[3]), 'printer') !== false) {
+    $display_symbol = "<i class='fas fa-print'></i>";
   }
 ?>
 <tr>
