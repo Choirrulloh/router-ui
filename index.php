@@ -152,7 +152,11 @@
           </small><br />
           <small><strong>ISP:</strong>&nbsp;<?php echo $isp_name ?></small><br />
           <small><strong>Public IPv4:</strong>&nbsp;<?php echo $external_ipv4 ?></small><br />
-          <small><strong>Public IPv6:</strong>&nbsp;<?php echo $external_ipv6 ?></small><br />
+          <?php
+          if ($external_ipv6) {
+            echo "<small><strong>Public IPv6:</strong>&nbsp;".$external_ipv6."</small><br />";
+          }
+          ?>
           <small><strong>Physical Address:</strong>&nbsp;<?php echo $lan_mac ?></small><br />
           <small><strong>IPv4:</strong>&nbsp;
             <?php
